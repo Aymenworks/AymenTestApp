@@ -1,7 +1,7 @@
-import FluentSQLite
+import FluentMySQL
 import Vapor
 
-final class Acronym: SQLiteModel {
+final class Acronym: MySQLModel {
     var id: Int?
 
     var short: String
@@ -17,5 +17,5 @@ final class Acronym: SQLiteModel {
 /// Make possible the creation of the table on the database
 extension Acronym: Migration { }
 
-/// Make possible for `Acronym` to be encoded to and decoded from HTTP messages.
+/// Inherit from Codable. Make possible for `Acronym` to be encoded to and decoded from HTTP messages.
 extension Acronym: Content { }

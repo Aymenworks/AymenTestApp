@@ -10,9 +10,10 @@ public func routes(_ router: Router) throws {
         return "Hello, world!"
     }
     
-    router.get("hello", String.parameter) { req -> String in
+    router.get("hello", String.parameter, Int.parameter) { req -> String in
         let name = try req.parameters.next(String.self)
-        return "Hello, \(name)!"
+        let age = try req.parameters.next(Int.self)
+        return "Hello, \(name)! You are \(age) years old."
     }
     
     router.post("api", "acronyms") { req -> Future<Acronym> in
