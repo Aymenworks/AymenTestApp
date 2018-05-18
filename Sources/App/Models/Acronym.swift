@@ -19,3 +19,6 @@ extension Acronym: Migration { }
 
 /// Inherit from Codable. Make possible for `Acronym` to be encoded to and decoded from HTTP messages.
 extension Acronym: Content { }
+
+/// Vapor’s powerful type safety for parameters
+extension Acronym: Parameter { }
