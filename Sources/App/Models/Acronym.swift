@@ -3,14 +3,20 @@ import Vapor
 
 final class Acronym: MySQLModel {
     var id: Int?
-
     var short: String
     var long: String
+    var userId: User.ID
 
-    init(id: Int? = nil, short: String, long: String) {
-        self.id = id
+    init(short: String, long: String, userId: User.ID) {
         self.short = short
         self.long = long
+        self.userId = userId
+    }
+}
+
+extension Acronym {
+    var user: Parent<Acronym, User> {
+        return parent(\.userId)
     }
 }
 

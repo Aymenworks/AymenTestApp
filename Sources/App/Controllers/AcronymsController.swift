@@ -17,6 +17,7 @@ struct AcronymsController: RouteCollection {
 
         // Acronym.parameter autodetect the type of Acronym id. It also helps for type safery.
         acronymsInitialRoute.get(Acronym.parameter, use: get)
+        acronymsInitialRoute.get(Acronym.parameter, "user", use: getUser)
         acronymsInitialRoute.put(Acronym.parameter, use: update)
         acronymsInitialRoute.delete(Acronym.parameter, use: delete)
         acronymsInitialRoute.get("first", use: getFirstAcronym)
@@ -45,6 +46,14 @@ struct AcronymsController: RouteCollection {
         return try req.parameters.next(Acronym.self)
     }
     
+    func getUser(_ req: Request) throws -> Future<User> {
+        // This function performs all the work necessary to get the acronym from the database
+        return try req.parameters.next(Acronym.self)
+            .flatMap(to: User.self) { acronym in
+               return try acronym.user.get(on: req)
+        }
+    }
+    
     func update(_ req: Request) throws -> Future<Acronym> {
         // dual future form of flatMap, to wait for both the parameter extraction and content decoding to complete.
         return try flatMap(to: Acronym.self,
@@ -52,6 +61,7 @@ struct AcronymsController: RouteCollection {
                            req.content.decode(Acronym.self)) { acronym, newAcronym -> Future<Acronym> in
                             acronym.short = newAcronym.short
                             acronym.long = newAcronym.long
+                            acronym.userId = newAcronym.userId
                             return acronym.save(on: req)
         }
     }

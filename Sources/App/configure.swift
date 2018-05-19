@@ -49,6 +49,7 @@ public func configure(
     /// Configure migrations
     var migrations = MigrationConfig()
     migrations.add(model: Acronym.self, database: .mysql)
+    migrations.add(model: User.self, database: .mysql)
     services.register(migrations)
 
 }
