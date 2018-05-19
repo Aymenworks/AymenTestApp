@@ -21,7 +21,14 @@ extension Acronym {
 }
 
 /// Make possible the creation of the table on the database
-extension Acronym: Migration { }
+extension Acronym: Migration {
+    static func prepare(on connection: MySQLConnection) -> Future<Void> {
+        return Database.create(self, on: connection) { builder in
+            try addProperties(to: builder)
+            try builder.addReference(from: \.userId, to: \User.id)
+        }
+    }
+}
 
 /// Inherit from Codable. Make possible for `Acronym` to be encoded to and decoded from HTTP messages.
 extension Acronym: Content { }

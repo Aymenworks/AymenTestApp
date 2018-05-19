@@ -48,8 +48,12 @@ public func configure(
 
     /// Configure migrations
     var migrations = MigrationConfig()
-    migrations.add(model: Acronym.self, database: .mysql)
     migrations.add(model: User.self, database: .mysql)
+    migrations.add(model: Acronym.self, database: .mysql)
     services.register(migrations)
-
+    
+    // Revert
+    var commandsConfiguration = CommandConfig.default()
+    commandsConfiguration.use(RevertCommand.self, as: "revert")
+    services.register(commandsConfiguration)
 }
